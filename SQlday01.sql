@@ -13,7 +13,7 @@ ogrenci_no char(7),
 isim varchar (20),
 soyisim varchar(25),
 not_ort real, 		-- ondalikli sayilar icin kullanilir (double gibi)
-kayit_tarih date -- sonda virgül konulmaz
+kayit_tarih date -- sonda virgül konulmaz.
 );
 
 
