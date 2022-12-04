@@ -75,6 +75,7 @@ kayit_tarih date
 );
 
 -- PRIMARY KEY atamasi 2. yol
+--Eger ismi kendinn vermek istersen;
 
 CREATE TABLE ogrenciler9
 (
@@ -83,7 +84,19 @@ isim varchar(20) ,
 soyisim varchar(25),
 not_ort real,
 kayit_tarih date ,
-CONSTRAINT ogr PRIMARY KEY (ogrenci_no) 
+CONSTRAINT ogr PRIMARY KEY (ogrenci_no) -- bu sekilde de constraints ismi atanabilir.
+);
+
+
+-- PRIMARY KEY atamasi 3. yol
+CREATE TABLE ogrenciler9
+(
+ogrenci_no char(7) ,	
+isim varchar(20) , 
+soyisim varchar(25),
+not_ort real,
+kayit_tarih date ,
+PRIMARY KEY (ogrenci_no) 
 );
 
 
@@ -108,8 +121,10 @@ CREATE TABLE urunler
 (
 tedarikci_id char(5),
 urun_id char(5),
-foreign KEY (tedarikci_id) REFERENCES tedarikciler3(tedarikci_id)
-);
+FOREIGN KEY (tedarikci_id) REFERENCES tedarikciler3(tedarikci_id)
+); 
+
+--CONSTRAINT urn_fk FOREIGN KEY (tedarikci_id) REFERENCES tedarikciler3(tedarikci_id) ismi kendin atamak istersen
 
 select * from tedarikciler3;
 select * from urunler;
@@ -141,25 +156,26 @@ FOREIGN KEY (adres_id) REFERENCES calisanlar(id)
 
 INSERT INTO calisanlar VALUES('10002', 'Mehmet Yılmaz' ,12000, '2018-04-14');
 INSERT INTO calisanlar VALUES('10008', null, 5000, '2018-04-14');
-INSERT INTO calisanlar VALUES('10010', 'Mehmet Yılmaz', 5000, '2018-04-14'); -- UNIQUE CONS. Kabul etmez
+--INSERT INTO calisanlar VALUES('10010', 'Mehmet Yılmaz', 5000, '2018-04-14'); -- UNIQUE CONS. Kabul etmez/ 2 kere ayni isim olmuyor burada.
 INSERT INTO calisanlar VALUES('10004', 'Veli Han', 5000, '2018-04-14');
 INSERT INTO calisanlar VALUES('10005', 'Mustafa Ali', 5000, '2018-04-14');
-INSERT INTO calisanlar VALUES('10006', 'Canan Yaş', NULL, '2019-04-12'); -- NOT NULL CONS. Kabul etmez
+--INSERT INTO calisanlar VALUES('10006', 'Canan Yaş', NULL, '2019-04-12'); -- NOT NULL CONS. Kabul etmez. null kabul olmuyor.
 INSERT INTO calisanlar VALUES('10003', 'CAN', 5000, '2018-04-14');
-INSERT INTO calisanlar VALUES('10007', 'CAN', 5000, '2018-04-14'); -- UNIQUE CONS. Kabul etmez
-INSERT INTO calisanlar VALUES('10009', 'cem', '', '2018-04-14');  --INT / STRING KABUL ETMEZ
+--INSERT INTO calisanlar VALUES('10007', 'CAN', 5000, '2018-04-14'); -- UNIQUE CONS. Kabul etmez. Iki kere can girildigi icin
+--INSERT INTO calisanlar VALUES('10009', 'cem', '', '2018-04-14');  --INT olan yere  / STRING KABUL ETMEZ. 
 INSERT INTO calisanlar VALUES('', 'osman', 2000, '2018-04-14');
-INSERT INTO calisanlar VALUES('', 'osman can', 2000, '2018-04-14'); -- PRIMARY KEY
-INSERT INTO calisanlar VALUES( '10002', 'ayse Yılmaz' ,12000, '2018-04-14'); -- PRIMARY KEY
-INSERT INTO calisanlar VALUES( null, 'filiz ' ,12000, '2018-04-14'); -- PRIMARY KEY
+--INSERT INTO calisanlar VALUES('', 'osman can', 2000, '2018-04-14'); -- PRIMARY KEY/ 
+--INSERT INTO calisanlar VALUES( '10002', 'ayse Yılmaz' ,12000, '2018-04-14'); -- PRIMARY KEY// 1002 kullanilmis
+--INSERT INTO calisanlar VALUES( null, 'filiz ' ,12000, '2018-04-14'); -- PRIMARY KEY//primary key null kabul etmez
+
 INSERT INTO adresler VALUES('10003','Mutlu Sok', '40.Cad.','IST');
 INSERT INTO adresler VALUES('10003','Can Sok', '50.Cad.','Ankara');
 INSERT INTO adresler VALUES('10002','Ağa Sok', '30.Cad.','Antep');
 
 -- Parent tabloda olmayan id ile child a ekleme yapamayiz
-INSERT INTO adresler VALUES('10012','Ağa Sok', '30.Cad.','Antep');
+INSERT INTO adresler VALUES('10012','Ağa Sok', '30.Cad.','Antep'); -- //10012 nolu ogrenci yok
 
--- FK'ye null değeri atanabilir.
+-- FK'ye(foreign key) null değeri atanabilir.
 INSERT INTO adresler VALUES(NULL,'Ağa Sok', '30.Cad.','Antep');
 INSERT INTO adresler VALUES(NULL,'Ağa Sok', '30.Cad.','Maraş');
 
@@ -175,11 +191,11 @@ CREATE TABLE calisanlar1
 (
 id varchar(15) PRIMARY KEY,
 isim varchar(30) UNIQUE,
-maas int CHECK (maas>10000),
+maas int CHECK (maas>10000), -- not null ilede calisir
 ise_baslama date
 );
 
-INSERT INTO calisanlar1 VALUES ('10002', 'Mehmet Yılmaz' ,19000, '2018-04-14'); --10000'den büyük olsun dedigimiz icin error verir eger kucuk olursa
+INSERT INTO calisanlar1 VALUES ('10002', 'Mehmet Yılmaz' ,19000, '2018-04-14'); --10000'den büyük olsun dedigimiz icin error verir, eger kucuk olursa
 SELECT * FROM calisanlar1;
 
 
@@ -227,6 +243,8 @@ INSERT INTO ogrenciler10 VALUES(125, 'Kemal Yasa', 'Hasan',85);
 INSERT INTO ogrenciler10 VALUES(126, 'Nesibe Yilmaz', 'Ayse',95);
 INSERT INTO ogrenciler10 VALUES(127, 'Mustafa Bak', 'Can',99);
 INSERT INTO ogrenciler10 VALUES(127, 'Mustafa Bak', 'Ali', 99);
+
+DELETE FROM ogrenciler10 WHERE isim='Nesibe Yilmaz' or isim='Mustafa Bak' ; 
 
 select * from ogrenciler10;
 
