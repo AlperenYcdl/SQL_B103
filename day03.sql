@@ -14,6 +14,7 @@ INSERT INTO ogrenciler10 VALUES(127, 'Mustafa Bak', 'Can',99);
 INSERT INTO ogrenciler10 VALUES(127, 'Mustafa Bak', 'Ali', 99);
 
 select * from ogrenciler10;
+
 --Ismi 'Mustafa Bak' ve 'Nesibe Yilmaz' olan kayitlari silelim.
 
 DELETE FROM ogrenciler10 WHERE isim='Mustafa Bak' or isim= 'Nesibe Yilmaz';
@@ -47,7 +48,7 @@ talebe_id char(3),
 ders_adi varchar(30),
 yazili_notu int,
 CONSTRAINT notlar_fk FOREIGN KEY (talebe_id) REFERENCES talebeler2(id))
-on delete cascade
+on delete cascade -- direk parent i silersen child class i da silmek icin.
 );
 
 INSERT INTO talebeler2 VALUES(123, 'Ali Can', 'Hasan',75);

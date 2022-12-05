@@ -1,5 +1,6 @@
--- AGGREGATE METHOD
 
+
+-- 				AGGREGATE METHOD
 --Calisanlar tablosunda maksimum maası listeleyiniz
 SELECT max(maas) AS maksimum_maas FROM calisanlar2;
 
@@ -19,7 +20,7 @@ SELECT sum(maas) AS toplam_maas FROM calisanlar2;
 --Calisanlar tablosundaki maasların ortalamasını listeleyiniz
 SELECT avg(maas) FROM calisanlar2;
 --ya da;
-SELECT round(avg(maas),2) FROM calisanlar2;
+SELECT round(avg(maas),2) FROM calisanlar2; -- 2 oldugu icin virgülden sonra gelen ondalikli sayinin sadece ikisini verir.
 
 
 --Calisanlar tablosundaki maasların sayısı
@@ -79,6 +80,11 @@ SELECT * FROM summaas;
 
 
 -- EXİSTS CONDITION
+/*
+EXISTS Condition subquery’ler ile kullanilir. IN ifadesinin kullanımına benzer
+olarak, EXISTS ve NOT EXISTS ifadeleri de alt sorgudan getirilen değerlerin içerisinde
+bir değerin olması veya olmaması durumunda işlem yapılmasını sağlar
+*/
 
 CREATE TABLE mart
 (   
@@ -140,6 +146,7 @@ INSERT INTO tedarikciler VALUES (101, 'IBM', 'Kim Yon');
 INSERT INTO tedarikciler VALUES (102, 'Huawei', 'Çin Li');
 INSERT INTO tedarikciler VALUES (103, 'Erikson', 'Maki Tammen');
 INSERT INTO tedarikciler VALUES (104, 'Apple', 'Adam Eve');
+
 CREATE TABLE urunler -- child
 (
 ted_vergino int, 
@@ -149,6 +156,7 @@ musteri_isim VARCHAR(50),
 CONSTRAINT fk_urunler FOREIGN KEY(ted_vergino) REFERENCES tedarikciler(vergi_no)
 on delete cascade
 );    
+
 INSERT INTO urunler VALUES(101, 1001,'Laptop', 'Ayşe Can');
 INSERT INTO urunler VALUES(102, 1002,'Phone', 'Fatma Aka');
 INSERT INTO urunler VALUES(102, 1003,'TV', 'Ramazan Öz');
@@ -156,6 +164,7 @@ INSERT INTO urunler VALUES(102, 1004,'Laptop', 'Veli Han');
 INSERT INTO urunler VALUES(103, 1005,'Phone', 'Canan Ak');
 INSERT INTO urunler VALUES(104, 1006,'TV', 'Ali Bak');
 INSERT INTO urunler VALUES(104, 1007,'Phone', 'Aslan Yılmaz');
+
 select * from tedarikciler
 select * from urunler
 -- vergi_no’su 102 olan tedarikcinin firma ismini 'Vestel' olarak güncelleyeniz.
@@ -186,4 +195,4 @@ WHERE musteri_isim='Ali Bak';
 --* Urunler tablosunda laptop satin alan musterilerin ismini, firma_ismi Apple’in irtibat_isim'i ile degistirin.
 UPDATE urunler                      
 SET musteri_isim = (SELECT irtibat_ismi FROM tedarikciler WHERE firma_ismi='Apple')                     
-WHERE urun_isim='Laptop' 
+WHERE urun_isim='Laptop'; 

@@ -75,7 +75,7 @@ INSERT INTO calisanlar2 VALUES(567890123, 'Veli Yilmaz', 'Ankara', 7000, 'Adidas
 INSERT INTO calisanlar2 VALUES(456789012, 'Ayse Gul', 'Ankara', 1500, 'Pierre Cardin');
 INSERT INTO calisanlar2 VALUES(123456710, 'Fatma Yasa', 'Bursa', 2500, 'Vakko');
 
-
+delete  from markalar
 CREATE TABLE markalar
 (
 marka_id int,
@@ -121,6 +121,7 @@ WHERE isyeri IN (SELECT marka_isim FROM markalar WHERE marka_id>101);
 /*
 --ÖDEV- Ankara’da calisani olan markalarin marka id'lerini ve calisan sayilarini listeleyiniz.
 */
+select marka_id , calisan_sayisi , marka_isim from markalar where marka_isim in (select isyeri from calisanlar2 where sehir='Ankara')
 
 
 -- AGGREGATE METHOD
