@@ -1,131 +1,120 @@
-
-
-
--- IN CONDITIOAN
-DROP TABLE if exists musteriler  
-
-
-CREATE TABLE musteriler (
-urun_id int,
-musteri_isim varchar(50), urun_isim varchar(50)
-);
-INSERT INTO musteriler VALUES (10, 'Mark', 'Orange'); 
-INSERT INTO musteriler VALUES (10, 'Mark', 'Orange');  
-INSERT INTO musteriler VALUES (20, 'John', 'Apple'); 
-INSERT INTO musteriler VALUES (30, 'Amy', 'Palm'); 
-INSERT INTO musteriler VALUES (20, 'Mark', 'Apple'); 
-INSERT INTO musteriler VALUES (10, 'Adem', 'Orange'); 
-INSERT INTO musteriler VALUES (40, 'John', 'Apricot'); 
-INSERT INTO musteriler VALUES (20, 'Eddie', 'Apple');
-
-select * from musteriler;
-
---IN CONDITION
-
---Musteriler tablosundna urun ismi orange ,apple ve Apricot olan tüm verileri listeleyiniz.
-SELECT * FROM musteriler WHERE urun_isim='Orange' or urun_isim='Apple' or urun_isim='Apricot';
-
-SELECT * FROM musteriler Where urun_isim IN ('Orange','Apple','Apricot');
-
--- NOT IN --> Yazdigimiz verilerin disindakileri getirir.
-SELECT * FROM musteriler Where urun_isim NOT IN ('Orange','Apple','Apricot');
-
-
-SELECT * FROM musteriler Where urun_isim='Orange' and urun_isim='Apple'
-
-
-
-/*
-							BETWEEN 
-Condition iki mantiksal ifade ile tanimlayabilecegimiz durumlari tek komutla
-yazabilme imkani verir. Yazdigimiz 2 sinirda araliga dahildir 
-*/
-
---BETWEEN CONDITION
-
---Musteriler tablosundan id si 20 ile 40 arasinda olan verileri listeleteyiniz.
-
---1.Yol;
-SELECT * FROM musteriler WHERE urun_id>=20 and urun_id<=40;
-
---2.Yol;
-SELECT * FROM musteriler WHERE urun_id BETWEEN 20 and 40;
-
---araliginda degil ise boyle yazariz;
-SELECT * FROM musteriler WHERE urun_id NOT BETWEEN 20 and 40;
-
-
-
---- SUBQUERIES --> Sorgu icinde sorgu;
-
-CREATE TABLE calisanlar2
+CREATE TABLE ogrenciler10
 (
 id int,
 isim VARCHAR(50),
-sehir VARCHAR(50),
-maas int,
-isyeri VARCHAR(20)
+veli_isim VARCHAR(50),
+yazili_notu int
 );
 
-INSERT INTO calisanlar2 VALUES(123456789, 'Ali Seker', 'Istanbul', 2500, 'Vakko');
-INSERT INTO calisanlar2 VALUES(234567890, 'Ayse Gul', 'Istanbul', 1500, 'LCWaikiki');
-INSERT INTO calisanlar2 VALUES(345678901, 'Veli Yilmaz', 'Ankara', 3000, 'Vakko');
-INSERT INTO calisanlar2 VALUES(456789012, 'Veli Yilmaz', 'Izmir', 1000, 'Pierre Cardin');
-INSERT INTO calisanlar2 VALUES(567890123, 'Veli Yilmaz', 'Ankara', 7000, 'Adidas');
-INSERT INTO calisanlar2 VALUES(456789012, 'Ayse Gul', 'Ankara', 1500, 'Pierre Cardin');
-INSERT INTO calisanlar2 VALUES(123456710, 'Fatma Yasa', 'Bursa', 2500, 'Vakko');
+INSERT INTO ogrenciler10 VALUES(123, 'Ali Can', 'Hasan',75);
+INSERT INTO ogrenciler10 VALUES(124, 'Merve Gul', 'Ayse',85);
+INSERT INTO ogrenciler10 VALUES(125, 'Kemal Yasa', 'Hasan',85);
+INSERT INTO ogrenciler10 VALUES(126, 'Nesibe Yilmaz', 'Ayse',95);
+INSERT INTO ogrenciler10 VALUES(127, 'Mustafa Bak', 'Can',99);
+INSERT INTO ogrenciler10 VALUES(127, 'Mustafa Bak', 'Ali', 99);
 
-delete  from markalar
-CREATE TABLE markalar
+select * from ogrenciler10;
+
+--Ismi 'Mustafa Bak' ve 'Nesibe Yilmaz' olan kayitlari silelim.
+
+DELETE FROM ogrenciler10 WHERE isim='Mustafa Bak' or isim= 'Nesibe Yilmaz';
+
+
+--Veli ismi Hasan olan datayi silelim
+
+DELETE FROM ogrenciler10 WHERE veli_isim='Hasan';
+
+-- TRUNCATE --
+-- Bir tablodaki tüm verileri geri alamayacagimiz sekilde siler. Sartli silme yapmaz
+
+TRUNCATE TABLE ogrenciler10
+
+
+-- ON DELETE CASCADE
+DROP TABLE if exists adresler --Eger tablo varsa tabloyu siler 
+
+
+CREATE TABLE talebeler2
 (
-marka_id int,
-marka_isim VARCHAR(20),
-calisan_sayisi int
+id CHAR(3) primary key,
+isim VARCHAR(50),
+veli_isim VARCHAR(50),
+yazili_notu int
 );
 
-INSERT INTO markalar VALUES(100, 'Vakko', 12000);
-INSERT INTO markalar VALUES(101, 'Pierre Cardin', 18000);
-INSERT INTO markalar VALUES(102, 'Adidas', 10000);
-INSERT INTO markalar VALUES(103, 'LCWaikiki', 21000);
-INSERT INTO markalar VALUES(104, 'Nike', 19000);
+CREATE TABLE notlar2
+(
+talebe_id char(3),
+ders_adi varchar(30),
+yazili_notu int,
+CONSTRAINT notlar_fk FOREIGN KEY (talebe_id) REFERENCES talebeler2(id))
+on delete cascade -- direk parent i silersen child class i da silmek icin.
+);
+
+INSERT INTO talebeler2 VALUES(123, 'Ali Can', 'Hasan',75);
+INSERT INTO talebeler2 VALUES(124, 'Merve Gul', 'Ayse',85);
+INSERT INTO talebeler2 VALUES(125, 'Kemal Yasa', 'Hasan',85);
+INSERT INTO talebeler2 VALUES(126, 'Nesibe Yılmaz', 'Ayse',95);
+INSERT INTO talebeler2 VALUES(127, 'Mustafa Bak', 'Can',99);
+
+INSERT INTO notlar2 VALUES ('123','kimya',75);
+INSERT INTO notlar2 VALUES ('124', 'fizik',65);
+INSERT INTO notlar2 VALUES ('125', 'tarih',90);
+INSERT INTO notlar2 VALUES ('126', 'Matematik',90);
+
+select * from talebeler2;
+select * from notlar2;
 
 
-select * from calisanlar2;
-select * from markalar;
 
-delete from calisanlar2;
+-- Notlar tablosundan talebeler_id'si 123 olan datayı silelim
 
--- Çalisan sayisi 15.000’den cok olan markalarin isimlerini 
--- ve bu markada calisanlarin isimlerini ve maaşlarini listeleyin.
-SELECT isim,maas,isyeri FROM calisanlar2
-WHERE isyeri IN (SELECT marka_isim FROM markalar WHERE calisan_sayisi>15000);
+DELETE FROM notlar WHERE talebe_id='123';
+
+--Talebeler tablosundan id'si 126 olan datayi silelim.
+
+delete FROM talebeler2 WHERE id='126';
+
+CREATE TABLE talebe
+(
+id CHAR(3) primary key,
+isim VARCHAR(50),
+veli_isim VARCHAR(50),
+yazili_notu int
+);
+
+CREATE TABLE not1
+(
+talebe_id char(3),
+ders_adi varchar(30),
+yazili_notu int,
+CONSTRAINT notlar_fk FOREIGN KEY (talebe_id) REFERENCES talebe(id)
+on delete cascade
+);
+INSERT INTO talebe VALUES(123, 'Ali Can', 'Hasan',75);
+INSERT INTO talebe VALUES(124, 'Merve Gul', 'Ayse',85);
+INSERT INTO talebe VALUES(125, 'Kemal Yasa', 'Hasan',85);
+INSERT INTO talebe VALUES(126, 'Nesibe Yılmaz', 'Ayse',95);
+INSERT INTO talebe VALUES(127, 'Mustafa Bak', 'Can',99);
 
 
--- marka_id’si 101’den büyük olan marka çalişanlarinin 
--- isim, maaş ve şehirlerini listeleyiniz
-SELECT isim,maas,sehir FROM calisanlar2 
-WHERE isyeri IN (SELECT marka_isim FROM markalar WHERE marka_id>101);
+INSERT INTO not1 VALUES ('123','kimya',75);
+INSERT INTO not1 VALUES ('124', 'fizik',65);
+INSERT INTO not1 VALUES ('125', 'tarih',90);
+INSERT INTO not1 VALUES ('126', 'Matematik',90);
 
+select * from talebe;
+select * from not1;
 
--- Çalisan sayisi 15.000’den cok olan markalarin isimlerini ve bu markada calisanlarin
--- isimlerini ve maaşlarini listeleyin.
-SELECT isim,maas,isyeri FROM calisanlar2
-WHERE isyeri IN (SELECT marka_isim FROM markalar WHERE calisan_sayisi>15000);
+--Talebeler tablosundan id'si 126 olan datayi silelim.
 
-
--- marka_id’si 101’den büyük olan marka çalişanlarinin
--- isim, maaş ve şehirlerini listeleyiniz.
-SELECT isim,maas,sehir FROM calisanlar2
-WHERE isyeri IN (SELECT marka_isim FROM markalar WHERE marka_id>101);
+DELETE FROM talebe WHERE id='126'
 
 /*
---ÖDEV- Ankara’da calisani olan markalarin marka id'lerini ve calisan sayilarini listeleyiniz.
+    Her defasında önce child tablodaki verileri silmek yerine ON DELETE CASCADE silme özelliği ile
+	parent tablo dan da veri silebiliriz. Yanlız ON DELETE CASCADE komutu kullanımında parent tablodan sildiğimiz
+	data child tablo dan da silinir
 */
-select marka_id , calisan_sayisi , marka_isim from markalar where marka_isim in (select isyeri from calisanlar2 where sehir='Ankara')
 
 
--- AGGREGATE METHOD
-
---Calisanlar tablosunda maksimum maası listeleyiniz
-SELECT max(maas) AS maksimum_maas FROM calisanlar2;
 

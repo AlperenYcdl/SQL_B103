@@ -96,5 +96,76 @@ SELECT * FROM insanlar WHERE isim='Mine' ORDER BY ssn
 
 --	NOT : Order By komutundan sonra field ismi yerine field(sutun) numarasi da kullanilabilir
 --	Insanlar tablosundaki soyismi Bulut olanlari isim sirali olarak listeleyin
-
 SELECT * FROM insanlar WHERE soyisim='Bulut' order by 4
+
+
+--	Insanlar tablosundaki tum kayitlari SSN numarasi buyukten kucuge olarak siralayin
+SELECT * FROM insanlar ORDER BY ssn DESC -- büyükten kücüge siralar 'DESC' .
+
+
+-- İsim ve soyisim değerlerini soyisim kelime uzunluklarına göre sıralayınız
+SELECT * FROM insanlar ORDER BY isim ASC, soyisim DESC;
+
+
+-- İsim ve soyisim değerlerini soyisim kelime uzunluklarına göre sıralayınız
+/*
+Eğer sutun uzunluğuna göre sıralamak istersek LENGTH komutu kullanırız 
+Ve yine uzunluğu büyükten küçüğe sıralamak istersek sonuna DESC komutunu ekleriz
+*/
+SELECT isim,soyisim FROM insanlar ORDER BY LENGTH (soyisim) DESC;
+
+-- Tüm isim ve soyisim değerlerini aynı sutunda çağırarak her bir sütun değerini uzunluğuna göre sıralayınız
+SELECT isim||' '||soyisim AS isim_soyisim FROM insanlar ORDER BY LENGTH(isim||soyisim)
+
+SELECT isim||' '||soyisim AS isim_soyisim FROM insanlar ORDER BY LENGTH (isim)+LENGTH (soyisim)
+
+SELECT CONCAT(isim,' ',soyisim) AS isim_soyisim FROM insanlar ORDER BY LENGTH (isim)+LENGTH (soyisim)
+
+SELECT CONCAT(isim,' ',soyisim) AS isim_soyisim FROM insanlar ORDER BY LENGTH (concat(isim,soyisim))
+
+
+
+--				GROUP BY CLAUSE
+/*
+Group By komutu sonuçları bir veya daha fazla sütuna göre gruplamak için SELECT
+komutuyla birlikte kullanılır.
+*/
+drop table if exists manav
+
+CREATE TABLE manav
+(
+isim varchar(50),  
+Urun_adi varchar(50),  
+Urun_miktar int
+);
+
+INSERT INTO manav VALUES( 'Ali', 'Elma', 5);
+INSERT INTO manav VALUES( 'Ayse', 'Armut', 3);
+INSERT INTO manav VALUES( 'Veli', 'Elma', 2);
+INSERT INTO manav VALUES( 'Hasan', 'Uzum', 4);
+INSERT INTO manav VALUES( 'Ali', 'Armut', 2);
+INSERT INTO manav VALUES( 'Ayse', 'Elma', 3);
+INSERT INTO manav VALUES( 'Veli', 'Uzum', 5);
+INSERT INTO manav VALUES( 'Ali', 'Armut', 2);
+INSERT INTO manav VALUES( 'Veli', 'Elma', 3);
+INSERT INTO manav VALUES( 'Ayse', 'Uzum', 2);
+
+select * from manav
+
+--Isme gore alinan toplam urunleri listeleyiniz
+SELECT sum(urun_miktar) from manav -- tek sonuc dondurur
+SELECT isim,sum(urun_miktar) AS aldığı_toplam_urun FROM manav
+GROUP BY isim;
+
+
+--Isme gore alinan toplam urunleri bulun ve urunleri büyükten küçüğe listeleyiniz
+SELECT isim,sum(urun_miktar) AS aldığı_toplam_urun FROM manav
+GROUP BY isim
+ORDER BY aldığı_toplam_urun DESC;
+
+
+-- Urun ismine gore urunu alan toplam kisi sayisi
+SELECT urun_adi,count(isim) FROM manav
+GROUP BY urun_adi;
+SELECT isim,count(urun_adi) FROM manav
+GROUP BY isim
